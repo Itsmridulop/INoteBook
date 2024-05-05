@@ -16,8 +16,9 @@ const UserSchema = new mongoose.Schema({
         required: true,
         min: 8
     },
-    DOB: {
-        type: Date
+    date: {
+        type: Date,
+        default: Date.now
     }  
 })
 
