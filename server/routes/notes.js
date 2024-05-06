@@ -40,6 +40,9 @@ router.get('/addnotes',fetchUser, [
 
 // update notes
 
+
+// TODO: get id of notes which has to be updated or deleted from user
+
 router.put('/updatenote',fetchUser, async (req, res) => {
     try {
         const { title, details, tags } = req.body
