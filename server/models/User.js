@@ -14,7 +14,7 @@ const UserSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        min: 8
+        min: [8, 'password must be greater than 8']
     },
     date: {
         type: Date,

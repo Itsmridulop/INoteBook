@@ -3,8 +3,9 @@ const router = express.Router()
 const user = require('../models/User')
 const bcrypt = require('bcryptjs')
 const { body, validationResult } = require('express-validator')
-const jwtSecret = "hjbfdsbchjbsdhbchjssacscsxcsdd"
+const jwtSecret = process.env.JWT_SECRET
 const jwt = require('jsonwebtoken')
+const fetchUser = require('../middleware/fetchUserData')
 
 // create a user(signup module)
 
@@ -25,7 +26,6 @@ router.post('/signup', [
         req.body.password = hashedPass
         const newUser = new user(req.body)
         await newUser.save()
-        console.log(newUser.id)
         const data = {
             user: {
                 id: newUser.id
@@ -44,17 +44,16 @@ router.post('/signup', [
 
 router.post('/login', [
     body('email', 'Enter a valid user email').isEmail(),
-    body('password', 'Password canno\'t be blank').exists()
+    body('password', 'Password canno\'t be blank').isLength({min: 8})
 ] , async (req, res) => {
     const error = validationResult(req)
     if(!error.isEmpty()) res.status(400).json({error: error.array()})
     const {email, password} = req.body
     try{   
         let existingUser = await user.findOne({email})
-        // console.log(existingUser)
-        if(!existingUser) return res.status(400).send("Invalid credentails are worng.")
+        if(!existingUser) return res.status(401).send("Invalid credentails.")
         const passwordCompare = await bcrypt.compare(password, existingUser.password)
-        if(!passwordCompare) return res.status(400).send("Invalid credentials")
+        if(!passwordCompare) return res.status(401).send("Invalid credentials.")
         const data = {
             user: {
                 id: existingUser.id
@@ -62,7 +61,18 @@ router.post('/login', [
         }
         const authToken = jwt.sign(data, jwtSecret)
         res.json({authToken})
-        
+    } catch (error) {
+        res.status(500).send("Some ERROR occur")
+        console.log(error)
+    }
+})
+
+// getting user data
+
+router.post('/getuser',fetchUser, async (req, res) =>{
+    try {
+        const reqUser = await user.findById(req.user.id).select('-password').select('-_id').select('-__v')
+        res.json(reqUser)
     } catch (error) {
         res.status(500).send("Some ERROR occur")
         console.log(error)
