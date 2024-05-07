@@ -6,6 +6,7 @@ const { body, validationResult } = require('express-validator')
 const jwtSecret = process.env.JWT_SECRET
 const jwt = require('jsonwebtoken')
 const fetchUser = require('../middleware/fetchUserData')
+const validator = require('validator')
 
 // create a user(signup module)
 
@@ -13,7 +14,7 @@ router.post('/signup', [
     body('userName', 'User name must comtain atleat 3 character').isAlpha().isLength({min: 3}),
     body('password', 'Password must contain atleast 8 character').isAlphanumeric().isLength({min: 8}),
     body('email', 'Enter a valid user email').isEmail()
-] , async (req, res) => {
+], async (req, res) => {
     const error = validationResult(req)
     if(!error.isEmpty()) return res.status(400).json({error: error.array()})
     try {
@@ -42,10 +43,10 @@ router.post('/signup', [
 
 // create a user(signup module)
 
-router.post('/login', [
+router.post('/login',[
     body('email', 'Enter a valid user email').isEmail(),
     body('password', 'Password canno\'t be blank').isLength({min: 8})
-] , async (req, res) => {
+], async (req, res) => {
     const error = validationResult(req)
     if(!error.isEmpty()) res.status(400).json({error: error.array()})
     const {email, password} = req.body

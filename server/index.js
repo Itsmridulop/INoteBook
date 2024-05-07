@@ -7,12 +7,11 @@ dotenv.config({path: './config.env'})
 
 connectToMongo()
 const app = express()
-const port = 3000
 
 app.use(express.json())
 app.use('/api/auth', require('./routes/auth.js'))
 app.use('/api/notes', require('./routes/notes.js'))
 
-app.listen(port, () => {
-    console.log(`running at http://localhost:${port}`)
+app.listen(process.env.PORT || 8080, () => {
+    console.log(`running at http://localhost:${process.env.PORT}`)
 })
