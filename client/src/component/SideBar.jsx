@@ -35,7 +35,7 @@ const Sidebar = ({ closeSiderBar }) => {
           <i className="fa-solid fa-gear pr-6" onClick={handleOpenSetting}></i>
         </div>
       </div>
-    ) : <Settings closeSetting={context.setOpenSetting}/>
+    ) : <Settings className="cursor-pointer"closeSetting={context.setOpenSetting}/>
   );
 };
 
