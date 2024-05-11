@@ -8,7 +8,6 @@ import FullNote from './component/FullNote';
 function App() {
   const [selectedNote, setSelectedNote] = useState(null);
   const [index, setIndex] = useState(undefined);
-
   return (
     <>
       {!selectedNote ? (

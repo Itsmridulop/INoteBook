@@ -14,7 +14,6 @@ function NoteState(props) {
         }
     ];
     const [note, setNote] = useState(initialData);
-    // const [openNote,setOpenNote] = useState(null)
     return (
         <NoteContext.Provider value={{ note, setNote }}>
             {props.children}
