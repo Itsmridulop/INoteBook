@@ -6,6 +6,7 @@ function Header() {
     <>
       <div className='flex justify-end'>
         <button><i className="fa-solid fa-user p-4 rounded-full m-5" style={{ backgroundColor: "#454545" }}></i></button>
+        {/* <button onClick={openSiderBar}><i className="fa-solid fa-user p-4 rounded-full m-5" style={{ backgroundColor: "#454545" }}></i></button> */}
       </div>
       <div className='p-24'>
         <h3>Add Notes</h3>

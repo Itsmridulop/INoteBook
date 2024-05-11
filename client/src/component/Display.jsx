@@ -1,25 +1,27 @@
-import React from 'react';
-import Note from './Note';
+  import React, { useContext, useEffect } from 'react';
+  import noteContext from '../context/noteContext';
+  import Note from './Note';
 
-function Display() {
-  const data = [
-    {
-      title: "Note1",
-      details: "lfsfsdfsdfsd fsdf sd f ds fsd f sdf sd f sd f sd fbsdbjs csd csd acsdcsdc  cds csdcsdcsd c sd csd c sdsc sd c sd c sdc sd dc sdcsdsc sd c ",
-      tags: ["test", "note", 'fds', 'fdsfd', 'fsdf']
-    },
-    {
-      title: "Note2",
-      details: "this is note2"
+  function Display({ index, indexFunction, setNote }) {
+    const context = useContext(noteContext);
+    const { note } = context;
+    const getIndex = (idx) => {
+      indexFunction(idx)
     }
-  ];
-  return (
-    <div className="flex h-screen bg-neutral-800 rounded-t-3xl p-20">
-      {data.map((ele, idx) => {
-        return <Note key={idx} data={ele}/>;
-      })}
-    </div>
-  );
-}
 
-export default Display;
+    useEffect(() => {
+      setNote(note[index])
+    },[index])
+  
+    return ( 
+      <div className="flex h-screen bg-neutral-800 rounded-t-3xl p-20">
+        
+        {note.map((ele, idx) => (
+          <button key={idx} className="flex" onClick={() => getIndex(idx)}><Note key={idx} data={ele}/></button>
+        ))}
+      </div>
+    );
+  }
+
+  export default Display;
+    
