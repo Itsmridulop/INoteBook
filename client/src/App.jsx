@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './App.css';
 import Header from './component/Header';
 import Display from './component/Display';
-import Sidebar from './component/SideBar';
 import NoteState from './context/NoteState';
 import FullNote from './component/FullNote';
 
