@@ -23,12 +23,11 @@ router.get('/addnotes',fetchUser, [
     try {
         const isUser = await user.findById(req.user.id)
         if(!isUser) return res.status(401).send("Access denied")
-        const { title, details, tags } = req.body
+        const { title, details } = req.body
         const userNotes = new notes({
             user: req.user.id,
             title: title,
             details: details,
-            tags: tags
         })
         await userNotes.save()
         res.send("Saved")
@@ -42,11 +41,10 @@ router.get('/addnotes',fetchUser, [
 
 router.put('/updatenote',fetchUser, async (req, res) => {
     try {
-        const { title, details, tags } = req.body
+        const { title, details } = req.body
         const newNotes = {}
         if(title) newNotes.title = title
         if(details) newNotes.details = details
-        if(tags) newNotes.tags = tags
         const exsitingNotes = await notes.findOne({user: req.user.id})
         if(!exsitingNotes) return res.status(404).send("Notes not found.")
         const updatedNotes = await notes.findByIdAndUpdate(exsitingNotes.id, {$set: newNotes}, {new: true})

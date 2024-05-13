@@ -22,7 +22,7 @@ function AddNote({closeAddPage}) {
                 <div className='py-8'>
                     <div className="mt-3">
                         <label htmlFor="title" className="form-label"><p>Title:</p></label>
-                        <input type="text" className="border-2 w-4/5 border-transparent border-b-white bg-transparent" id="title" name="title" placeholder="Title" onChange={onChange}/>
+                        <input type="text" className="border-2 w-4/5 border-transparent border-b-white bg-transparent" id="title" name="title" onChange={onChange}/>
                     </div>
                     <div className="mt-8">
                         <label htmlFor="detail" className="form-label"><p>Discription:</p></label>

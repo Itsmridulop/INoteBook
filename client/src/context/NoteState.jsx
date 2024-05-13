@@ -28,7 +28,9 @@ function NoteState(props) {
     };
 
     const editNote = (index, updatedNote) => {
-
+        const updatedNnoteArr = [...note]
+        updatedNnoteArr[index] = updatedNote
+        setNote(updatedNnoteArr)
     };
 
     return (
