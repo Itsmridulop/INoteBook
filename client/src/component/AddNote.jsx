@@ -1,9 +1,19 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
+import noteContext from '../context/noteContext'
 
-function AddNote({closeSiderBar}) {
-    console.log(closeSiderBar)
+function AddNote({closeAddPage}) {
     const close = () => {
-        closeSiderBar(false)
+        closeAddPage(false)
+    }
+    const [updatedNnote, setUpdatedNote] = useState({title: '', details: ''})
+    const context = useContext(noteContext)
+    const {addNote} = context
+    const handleAdd = () => {
+        addNote(updatedNnote.title, updatedNnote.details)
+        close()
+    }
+    const onChange = (e) => {
+        setUpdatedNote({...updatedNnote, [e.target.name]: e.target.value})
     }
     return (
         <div className='fixed flex justify-center items-center h-screen w-screen top-0 bg-black bg-opacity-50'>
@@ -11,14 +21,14 @@ function AddNote({closeSiderBar}) {
             <div className="bg-zinc-800 w-3/5 h-3/5 rounded-2xl">
                 <div className='py-8'>
                     <div className="mt-3">
-                        <label htmlFor="exampleFormControlInput1" className="form-label"><p>Title:</p></label>
-                        <input type="text" className="border-2 w-4/5 border-transparent border-b-white bg-transparent" id="exampleFormControlInput1" placeholder="Title" />
+                        <label htmlFor="title" className="form-label"><p>Title:</p></label>
+                        <input type="text" className="border-2 w-4/5 border-transparent border-b-white bg-transparent" id="title" name="title" placeholder="Title" onChange={onChange}/>
                     </div>
                     <div className="mt-8">
-                        <label htmlFor="exampleFormControlTextarea1" className="form-label"><p>Discription:</p></label>
-                        <textarea className="border-2 w-4/5 h-48 border-transparent border-white bg-transparent" id="exampleFormControlTextarea1" row="8" />
+                        <label htmlFor="detail" className="form-label"><p>Discription:</p></label>
+                        <textarea className="border-2 w-4/5 h-48 border-transparent border-white bg-transparent" id="details" name="details" row="8" onChange={onChange}/>
                     </div>
-                    <button className='bg-green-900 w-4/5 p-2 rounded-full my-2'>Add</button>
+                    <button className='bg-green-700 w-4/5 p-2 rounded-full my-2' onClick={handleAdd}>Add</button>
                 </div>
             </div>
         </div>
