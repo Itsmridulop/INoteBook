@@ -14,7 +14,7 @@ router.get('/fetchnotes', fetchUser, async (req, res) => {
 
 // add notes
 
-router.get('/addnotes',fetchUser, [
+router.post('/addnotes',fetchUser, [
     body('title', 'Title cann\'t be empty').exists(),
     body('details', 'Details cann\'t be empty').exists()
 ], async (req, res) => {
@@ -39,15 +39,15 @@ router.get('/addnotes',fetchUser, [
 
 // update notes
 
-router.put('/updatenote',fetchUser, async (req, res) => {
+router.put('/updatenote/:id',fetchUser, async (req, res) => {
     try {
         const { title, details } = req.body
         const newNotes = {}
         if(title) newNotes.title = title
         if(details) newNotes.details = details
-        const exsitingNotes = await notes.findOne({user: req.user.id})
+        const exsitingNotes = await notes.findById(req.params.id)
         if(!exsitingNotes) return res.status(404).send("Notes not found.")
-        const updatedNotes = await notes.findByIdAndUpdate(exsitingNotes.id, {$set: newNotes}, {new: true})
+        const updatedNotes = await notes.findByIdAndUpdate(req.params.id, {$set: newNotes}, {new: true})
         res.json(updatedNotes)
     } catch (error) {
         res.status(500).send("Some ERROR occur")
@@ -57,13 +57,15 @@ router.put('/updatenote',fetchUser, async (req, res) => {
 
 // delete note
 
-router.delete('/deletenote',fetchUser, async (req, res) => {
+router.delete('/deletenote/:id',fetchUser, async (req, res) => {
     try {
         const isUser = await user.findById(req.user.id)
+        // console.log(isUser)
         if(!isUser) return res.status(404).send("User not found")
-        const reqUser = await notes.findOne({user: req.user.id})
+        const reqUser = await notes.findById(req.params.id)
+        console.log(reqUser)
         if(!reqUser) return res.status(404).send("Request not found.")
-        await notes.findByIdAndDelete(reqUser.id)
+        await notes.findByIdAndDelete(req.params.id)
     } catch (error) {
         res.status(500).send("Some ERROR occur")
         console.log("Routes error: ",error)

@@ -54,7 +54,7 @@ router.post('/login',[
         let existingUser = await user.findOne({email})
         if(!existingUser) return res.status(401).send("Invalid credentails.")
         const passwordCompare = await bcrypt.compare(password, existingUser.password)
-        if(!passwordCompare) return res.status(401).send("Invalid credentials.")
+        if(!passwordCompare) return res.status(401).send("Invalid pass.")
         const data = {
             user: {
                 id: existingUser.id
