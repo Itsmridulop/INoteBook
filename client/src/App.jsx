@@ -14,10 +14,9 @@ function App() {
   const [index, setIndex] = useState(undefined);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isLogging, setIsLogging] = useState(false);
-
   return (
     <>
-      {isLogging ? (
+      {!isLogging ? (
         <NoteState>
           {!selectedNote ? (
             <>
@@ -32,7 +31,7 @@ function App() {
       ) : (
         <Router>
           <Routes>
-            <Route exact path="/signin" element={<Signin />} />
+            <Route exact path="/" element={<Signin />} />
             <Route exact path="/loggin" element={<Logging />} />
           </Routes>
         </Router>

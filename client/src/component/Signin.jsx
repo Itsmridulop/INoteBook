@@ -1,9 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 function Signin() {
-    const handleSignIn = () => {
-        
+    const handleSignIn = async (e) => {
+        e.preventDefault()
+        const data = {
+            userName: document.getElementById('FirstName').value + document.getElementById('LastName').value,
+            email: document.getElementById('Email').value,
+            password: document.getElementById('Password').value,
+            confirmPassword: document.getElementById('PasswordConfirmation').value
+        }
+        console.log(JSON.stringify(data))
+        const res = await fetch('http://localhost:8080/api/auth/signup', {
+            method: 'POST',
+            body: {"userName":"MridulMishra","email":"mridulmishra2117@gmail.com","password":"password","confirmPassword":"password"}
+        })
+        console.log(res)
     }
     return (
         <main
@@ -27,7 +39,7 @@ function Signin() {
                         <input
                             type="text"
                             id="FirstName"
-                            name="first_name"
+                            name="firstName"
                             className="mt-1 w-full h-10 outline-none rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
                         />
                     </div>
@@ -43,7 +55,7 @@ function Signin() {
                         <input
                             type="text"
                             id="LastName"
-                            name="last_name"
+                            name="lastName"
                             className="mt-1 w-full h-10 outline-none rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
                         />
                     </div>
@@ -88,7 +100,7 @@ function Signin() {
                         <input
                             type="password"
                             id="PasswordConfirmation"
-                            name="password_confirmation"
+                            name="confirmPassword"
                             className="mt-1 w-full rounded-md h-10 outline-none border-gray-200 bg-white text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
                         />
                     </div>

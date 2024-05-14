@@ -66,7 +66,7 @@ function Loggin() {
                         </button>
                         <p className="mt-4 text-sm text-gray-500 sm:mt-0 dark:text-gray-400">
                             Create a new account
-                            <Link to="/signin" className="text-gray-700 ml-2 underline dark:text-gray-200">Sign In</Link>.
+                            <Link to="/" className="text-gray-700 ml-2 underline dark:text-gray-200">Sign In</Link>.
                         </p>
                     </div>
                 </form>
