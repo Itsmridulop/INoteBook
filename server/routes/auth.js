@@ -16,7 +16,8 @@ router.post('/signup', [
     body('email', 'Enter a valid user email').isEmail()
 ], async (req, res) => {
     const error = validationResult(req)
-    if(!error.isEmpty()) return res.status(400).json({error: error.array()})
+    if(!error.isEmpty()) return res.status(402).json({error: error.array()})
+    if(req.body.password !== req.body.confirmPassword) return res.status(400).send("password don't match")
     try {
         const existingUser = await user.findOne({userName: req.body.userName})
         if(existingUser) return res.status(400).json({message: "User allready exist"})
@@ -49,7 +50,8 @@ router.post('/login',[
 ], async (req, res) => {
     const error = validationResult(req)
     if(!error.isEmpty()) res.status(400).json({error: error.array()})
-    const {email, password} = req.body
+    const {email, password, confirmPassword} = req.body
+    if(password !== confirmPassword) return res.status(401).send('Password don\'t match')
     try{   
         let existingUser = await user.findOne({email})
         if(!existingUser) return res.status(401).send("Invalid credentails.")

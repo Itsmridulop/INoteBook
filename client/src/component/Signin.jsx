@@ -1,21 +1,22 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 
-function Signin() {
+function Signin({setSignin}) {
     const handleSignIn = async (e) => {
         e.preventDefault()
-        const data = {
-            userName: document.getElementById('FirstName').value + document.getElementById('LastName').value,
-            email: document.getElementById('Email').value,
-            password: document.getElementById('Password').value,
-            confirmPassword: document.getElementById('PasswordConfirmation').value
-        }
-        console.log(JSON.stringify(data))
         const res = await fetch('http://localhost:8080/api/auth/signup', {
             method: 'POST',
-            body: {"userName":"MridulMishra","email":"mridulmishra2117@gmail.com","password":"password","confirmPassword":"password"}
+            headers:{
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                userName: document.getElementById('FirstName').value + document.getElementById('LastName').value,
+                email: document.getElementById('Email').value,
+                password: document.getElementById('Password').value,
+                confirmPassword: document.getElementById('PasswordConfirmation').value
+            })
         })
-        console.log(res)
+        if(res.ok) setSignin(true)
     }
     return (
         <main

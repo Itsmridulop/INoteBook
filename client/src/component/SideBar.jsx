@@ -1,20 +1,23 @@
-import React, { useContext } from 'react';
-import sidebarContext from '../context/sidebarContext';
+import React, {useState} from 'react';
+// import sidebarContext from '../context/sidebarContext';
 import Settings from './Settings';
 
-const Sidebar = ({ closeSiderBar }) => {
-  const context = useContext(sidebarContext);
+const Sidebar = ({closeSiderBar, setLogout}) => {
+  const [openSetting, setOpenSetting ] = useState(false)
+  const handlelogOut = () => {
+    setLogout(false)
+  }
 
   const close = () => {
     closeSiderBar(false);
   };
 
   const handleOpenSetting = () => {
-    context.setOpenSetting(true);
+    setOpenSetting(true);
   };
 
   return (
-    !context.openSetting ? (
+    !openSetting ? (
       <div className={`fixed top-0 flex flex-col justify-between right-0 h-full w-64 bg-gray-900 text-white z-50 ${true ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out`}>
         <div>
           <div className="p-4">
@@ -32,10 +35,11 @@ const Sidebar = ({ closeSiderBar }) => {
           </button>
         </div>
         <div className='mb-12 flex justify-end'>
+          <button className='mr-16 rounded-lg bg-slate-800 py-2 px-4' onClick={handlelogOut}>LogOut</button>
           <i className="fa-solid fa-gear pr-6" onClick={handleOpenSetting}></i>
         </div>
       </div>
-    ) : <Settings className="cursor-pointer"closeSetting={context.setOpenSetting}/>
+    ) : <Settings className="cursor-pointer"closeSetting={setOpenSetting}/>
   );
 };
 

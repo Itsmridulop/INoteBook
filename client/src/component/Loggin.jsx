@@ -1,7 +1,24 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-function Loggin() {
+function Loggin({setLogin}) {
+
+    const handleLogIn = async (e) => {
+        e.preventDefault()
+        const res = await fetch('http://localhost:8080/api/auth/login', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: document.getElementById('Email').value,
+                password: document.getElementById('Password').value,
+                confirmPassword: document.getElementById('PasswordConfirmation').value
+
+            })
+        })
+        if(res.ok) setLogin(true)
+    }
 
     return (
         <main
@@ -61,6 +78,7 @@ function Loggin() {
                     <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
                         <button
                             className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500 dark:hover:bg-blue-700 dark:hover:text-white"
+                            onClick={handleLogIn}
                         >
                             LoggIn
                         </button>

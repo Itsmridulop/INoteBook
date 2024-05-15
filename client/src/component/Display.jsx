@@ -1,7 +1,6 @@
   import React, { useContext, useEffect } from 'react';
   import noteContext from '../context/noteContext';
   import Note from './Note';
-import NoteState from '../context/NoteState';
 
   function Display({ index, indexFunction,  noteFunction }) {
     const context = useContext(noteContext);

@@ -1,6 +1,6 @@
 const jwtSecret = process.env.JWT_SECRET
 const jwt = require('jsonwebtoken')
-console.log(jwtSecret)
+
 const fetchUserData = async (req, res, next) => {
     const token = req.header('auth-token')
     if(!token) return res.status(401).send("Invalid access.")

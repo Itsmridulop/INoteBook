@@ -16,11 +16,11 @@ function App() {
   const [isLogging, setIsLogging] = useState(false);
   return (
     <>
-      {!isLogging ? (
+      {isLogging ? (
         <NoteState>
           {!selectedNote ? (
             <>
-              <Header openFunction={setIsAddOpen} />
+              <Header openFunction={setIsAddOpen} setLogOut={setIsLogging}/>
               <Display index={index} indexFunction={setIndex} noteFunction={setSelectedNote} />
               {isAddOpen ? <AddNote closeAddPage={setIsAddOpen} /> : null}
             </>
@@ -31,8 +31,8 @@ function App() {
       ) : (
         <Router>
           <Routes>
-            <Route exact path="/" element={<Signin />} />
-            <Route exact path="/loggin" element={<Logging />} />
+            <Route exact path="/" element={<Signin setSignin={setIsLogging} />} />
+            <Route exact path="/loggin" element={<Logging setLogin={setIsLogging} />} />
           </Routes>
         </Router>
       )}
