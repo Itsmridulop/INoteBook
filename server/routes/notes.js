@@ -30,7 +30,7 @@ router.post('/addnotes',fetchUser, [
             details: details,
         })
         await userNotes.save()
-        res.send("Saved")
+        res.json(req.body)
     } catch (error) {
         res.status(500).send("Some ERROR occur")
         console.log(error.errmsg)
@@ -66,6 +66,7 @@ router.delete('/deletenote/:id',fetchUser, async (req, res) => {
         console.log(reqUser)
         if(!reqUser) return res.status(404).send("Request not found.")
         await notes.findByIdAndDelete(req.params.id)
+        res.send('delete ho gaya')
     } catch (error) {
         res.status(500).send("Some ERROR occur")
         console.log("Routes error: ",error)

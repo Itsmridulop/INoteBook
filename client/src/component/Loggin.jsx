@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
+import noteContext from '../context/noteContext'
 
 function Loggin({setLogin}) {
-
+    const {setNote} = useContext(noteContext)
     const handleLogIn = async (e) => {
         e.preventDefault()
         const res = await fetch('http://localhost:8080/api/auth/login', {
@@ -17,7 +18,21 @@ function Loggin({setLogin}) {
 
             })
         })
-        if(res.ok) setLogin(true)
+        if(res.ok) {
+            const data = await res.json()
+            localStorage.setItem('token',data.authToken)
+            const fetchRes = await fetch('http://localhost:8080/api/notes/fetchnotes',{
+                method: 'GET',
+                headers: {
+                    'auth-token': localStorage.getItem('token')
+                }
+            })
+            if(fetchRes.ok){
+                const fetchData = await fetchRes.json()
+                setNote(fetchData)
+            }
+            setLogin(true)
+        }
     }
 
     return (

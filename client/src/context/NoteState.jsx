@@ -1,42 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import NoteContext from './noteContext';
 
 function NoteState(props) {
     const baseUrl = 'http://localhost:8080'
-    const initialData = [
-        {
-            title: "Note1",
-            details: "lfsfsdfsdfsd fsdf sd f ds fsd f sdf sd f sd f sd fbsdbjs csd csd acsdcsdc  cds csdcsdcsd c sd csd c sdsc sd c sd c sdc sd dc sdcsdsc sd c ",
-        },
-        {
-            title: "Note2",
-            details: "this is note2"
-        }
-    ];
-    const [note, setNote] = useState(initialData);
+    const [note, setNote] = useState(null);
 
     const addNote = async (title, details) => {
         const res = await fetch(`${baseUrl}/api/notes/addnotes`, {
             method: 'POST',
             headers:{
                 'content-type': 'application/json',
-                'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY0MzlhZDNiODE5NzU0ZjU3ZDgyZmZmIn0sImlhdCI6MTcxNTcwNjU3OX0.vr75_06iPMWBiisVodwAy1ECGoUND99HI-7xgTjTs7g'
+                'auth-token': localStorage.getItem('token')
             },
             body: JSON.stringify({title, details})
         })
-        const addedNote = {
-            title: title,
-            details: details
-        }           
-        setNote([...note, addedNote]);
+        if(res.ok){
+            const fetchRes = await fetch(`${baseUrl}/api/notes/fetchnotes`, {
+                method: 'GET',
+                headers: {
+                    'auth-token': localStorage.getItem('token')
+                }
+            })
+            if(fetchRes.ok){
+                const fetchData = await fetchRes.json()
+                setNote(fetchData);
+            }
+        }
     };
 
     const deleteNote = async (index) => {
-        const res = await fetch(`${baseUrl}/api/notes/deletenote/66439c69b819754f57d83010`, {
+        const res = await fetch(`${baseUrl}/api/notes/deletenote/${note[index]._id}`, {
             method: 'DELETE',
             headers:{
                 'content-type': 'application/json',
-                'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY0MzlhZDNiODE5NzU0ZjU3ZDgyZmZmIn0sImlhdCI6MTcxNTcwNjU3OX0.vr75_06iPMWBiisVodwAy1ECGoUND99HI-7xgTjTs7g'
+                'auth-token': localStorage.getItem('token')
             },
         })
         const updatedNote = note.filter((_, idx) => idx !== index);
@@ -45,22 +42,21 @@ function NoteState(props) {
 
     const editNote = async (index, updatedNote) => {
         const {title, details} = updatedNote
-        const res = await fetch(`${baseUrl}/api/notes/updatenote/66439cbeb819754f57d8301c`, {
+        const res = await fetch(`${baseUrl}/api/notes/updatenote/${note[index]._id}`, {
             method: 'PUT',
             headers:{
                 'content-type': 'application/json',
-                'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjYzOTAzZTFmODAwZDBiODE4MGViZjlkIn0sImlhdCI6MTcxNTYxMzIzM30.rYcfpTYK37_YqOaH3LlaCgglBHL-IL-aFxf5lY2WC90'
+                'auth-token': localStorage.getItem('token')
             },
             body: JSON.stringify({title, details})
         })
-        // return res.json()
         const updatedNnoteArr = [...note]
         updatedNnoteArr[index] = updatedNote
         setNote(updatedNnoteArr)
     };
 
     return (
-        <NoteContext.Provider value={{ note, addNote, deleteNote, editNote }}>
+        <NoteContext.Provider value={{ note, setNote, addNote, deleteNote, editNote }}>
             {props.children}
         </NoteContext.Provider>
     );

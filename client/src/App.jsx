@@ -15,9 +15,9 @@ function App() {
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isLogging, setIsLogging] = useState(false);
   return (
-    <>
+    <NoteState>
       {isLogging ? (
-        <NoteState>
+        <>
           {!selectedNote ? (
             <>
               <Header openFunction={setIsAddOpen} setLogOut={setIsLogging}/>
@@ -27,7 +27,7 @@ function App() {
           ) : (
             <FullNote index={index} note={selectedNote} indexFunction={setIndex} closeNote={setSelectedNote} />
           )}
-        </NoteState>
+        </>
       ) : (
         <Router>
           <Routes>
@@ -36,7 +36,7 @@ function App() {
           </Routes>
         </Router>
       )}
-    </>
+    </NoteState>
   );
 }
 

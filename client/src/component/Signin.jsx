@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
+import noteContext from '../context/noteContext'
 
 function Signin({setSignin}) {
+    const {setNote} = useContext(noteContext)
     const handleSignIn = async (e) => {
+
         e.preventDefault()
         const res = await fetch('http://localhost:8080/api/auth/signup', {
             method: 'POST',
@@ -16,7 +19,20 @@ function Signin({setSignin}) {
                 confirmPassword: document.getElementById('PasswordConfirmation').value
             })
         })
-        if(res.ok) setSignin(true)
+        if(res.ok){
+            const data = await res.json()
+            localStorage.setItem('token', data.authToken)
+            const fetchRes = await fetch('http://localhost:8080/api/notes/fetchnotes', {
+                method: 'GET',
+                headers: {
+                    'auth-token': localStorage.getItem('token')
+                },
+            })
+            const fetchData = await fetchRes.json()
+            if(fetchRes.ok) setNote(fetchData)
+                setSignin(true)
+
+        }
     }
     return (
         <main
