@@ -72,7 +72,7 @@ router.post('/login',[
 
 // getting user data
 
-router.post('/getuser',fetchUser, async (req, res) =>{
+router.get('/getuser',fetchUser, async (req, res) =>{
     try {
         const reqUser = await user.findById(req.user.id).select('-password').select('-_id').select('-__v')
         res.json(reqUser)

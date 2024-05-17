@@ -39,7 +39,7 @@ function Signin({setSignin}) {
             className="flex items-center mt-48 justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6"
         >
             <div className="max-w-xl lg:max-w-3xl">
-                <div className="relative -mt-16 block lg:hidden">
+                <div className="relative -mt-16 block">
                     <h1 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl dark:text-white">
                         Sign In
                     </h1>
